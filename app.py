@@ -21,9 +21,11 @@ def index():
 @app.route("/api/submit", methods=["POST"])
 def send_lead():
   try:
-    data = request.get_json()
-    name = data.get("name")
-    phone = data.get("phone")
+    # Безопасно получаем данные: сначала проверяем JSON, затем обычную форму
+    data = request.get_json(silent=True) or request.form
+
+    name = data.get("name", "Не указано")
+    phone = data.get("phone", "Не указано")
 
     text = f"🎯 Новая заявка!\n\n👤 Имя: {name}\n📞 Телефон: {phone}"
 
@@ -45,7 +47,6 @@ def send_lead():
 
   except Exception as e:
     return jsonify({"status": "error", "message": str(e)}), 500
-
 
 if __name__ == "__main__":
   app.run(debug=True)
