@@ -18,7 +18,7 @@ def index():
 
 
 # Отправка формы в Telegram
-@app.route("/send", methods=["POST"])
+@app.route("/api/submit", methods=["POST"])
 def send_lead():
   try:
     data = request.get_json()
