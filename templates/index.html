@@ -3,131 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Заявка на сайт</title>
+    <title>Сайты для малого бизнеса под ключ</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: #0b1329;
+            color: #ffffff;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
         }
 
-        .card {
-            background-color: #1e293b;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        .container {
+            display: flex;
+            flex-direction: row;
+            background-color: #131c38;
+            border: 1px solid #1e294d;
+            border-radius: 20px;
+            max-width: 900px;
             width: 100%;
-            max-width: 400px;
+            padding: 40px;
+            gap: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
         }
 
-        h2 {
+        /* Левая часть - Преимущества */
+        .info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #4f87ff;
             margin-bottom: 20px;
-            font-size: 22px;
-            text-align: center;
+        }
+
+        .info-section p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            color: #e2e8f0;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #3b82f6;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        /* Правая часть - Форма */
+        .form-section {
+            flex: 1;
+            background-color: #1a2446;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #283563;
+        }
+
+        .form-section h2 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: #ffffff;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 6px;
-            font-size: 14px;
+            font-size: 13px;
             color: #94a3b8;
+            margin-bottom: 8px;
         }
 
-        input {
+        .form-group input {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #334155;
+            padding: 12px 16px;
             background-color: #0f172a;
-            color: #fff;
-            font-size: 15px;
+            border: 1px solid #283563;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
         }
 
-        input:focus {
-            border-color: #3b82f6;
+        .form-group input:focus {
+            border-color: #4f87ff;
         }
 
-        button {
+        .submit-btn {
             width: 100%;
-            padding: 12px;
-            background-color: #3b82f6;
-            color: white;
+            padding: 14px;
+            background: linear-gradient(135deg, #4f87ff 0%, #3b82f6 100%);
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            color: #ffffff;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: opacity 0.2s;
             margin-top: 10px;
         }
 
-        button:hover {
-            background-color: #2563eb;
+        .submit-btn:hover {
+            opacity: 0.9;
         }
 
-        button:disabled {
-            background-color: #64748b;
+        .submit-btn:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
-        .status-message {
+        .status-msg {
             margin-top: 15px;
             padding: 10px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
             display: none;
         }
 
-        .status-message.success {
+        .status-msg.success {
             display: block;
             background-color: rgba(34, 197, 94, 0.15);
             color: #4ade80;
             border: 1px solid #22c55e;
         }
 
-        .status-message.error {
+        .status-msg.error {
             display: block;
             background-color: rgba(239, 68, 68, 0.15);
             color: #f87171;
             border: 1px solid #ef4444;
         }
+
+        /* Адаптивность для мобильных */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 24px;
+            }
+            .info-section h1 {
+                font-size: 26px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>Оставить заявку</h2>
-        <form id="leadForm">
-            <div class="form-group">
-                <label for="name">Ваше имя</label>
-                <input type="text" id="name" name="name" placeholder="Захар" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Ваш телефон</label>
-                <input type="tel" id="phone" name="phone" placeholder="+375 (29) 000-00-00" required>
-            </div>
-            <button type="submit" id="submitBtn">Получить консультацию</button>
-        </form>
+    <div class="container">
+        <!-- Левая колонка -->
+        <div class="info-section">
+            <h1>Сайты для малого бизнеса под ключ</h1>
+            <p>Увеличу ваши продажи с помощью современного лендинга с быстрой загрузкой и адаптацией под мобильные устройства.</p>
+            
+            <ul class="features-list">
+                <li>Уникальный дизайн под вашу нишу</li>
+                <li>Высокая скорость загрузки</li>
+                <li>Мгновенные уведомления в Telegram</li>
+                <li>Адаптивность под все смартфоны</li>
+            </ul>
+        </div>
 
-        <div id="statusMessage" class="status-message"></div>
+        <!-- Правая колонка с формой -->
+        <div class="form-section">
+            <h2>Оставить заявку</h2>
+            <form id="leadForm">
+                <div class="form-group">
+                    <label>Ваше имя</label>
+                    <input type="text" name="name" id="nameInput" placeholder="Захар" required>
+                </div>
+                <div class="form-group">
+                    <label>Ваш телефон</label>
+                    <input type="tel" name="phone" id="phoneInput" placeholder="+375 (29) 525-18-01" required>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Получить консультацию</button>
+            </form>
+
+            <div id="statusMessage" class="status-msg"></div>
+        </div>
     </div>
 
     <script>
@@ -138,14 +223,14 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Блокируем кнопку на время отправки
+            // Блокировка кнопки во время отправки
             submitBtn.disabled = true;
             submitBtn.innerText = 'Отправка...';
-            statusMessage.className = 'status-message';
+            statusMessage.className = 'status-msg';
             statusMessage.style.display = 'none';
 
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
+            const name = document.getElementById('nameInput').value;
+            const phone = document.getElementById('phoneInput').value;
 
             try {
                 const response = await fetch('/api/submit', {
@@ -160,17 +245,17 @@
 
                 if (response.ok && data.status === 'success') {
                     statusMessage.innerText = '✓ Заявка успешно отправлена!';
-                    statusMessage.className = 'status-message success';
+                    statusMessage.className = 'status-msg success';
                     form.reset();
                 } else {
-                    throw new Error(data.message || 'Ошибка при отправке');
+                    throw new Error(data.message || 'Ошибка отправки');
                 }
             } catch (error) {
                 console.error('Ошибка:', error);
                 statusMessage.innerText = '✕ Не удалось отправить. Попробуйте еще раз.';
-                statusMessage.className = 'status-message error';
+                statusMessage.className = 'status-msg error';
             } finally {
-                // Возвращаем кнопку в исходное состояние
+                // Возвращаем кнопку в исходный вид
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Получить консультацию';
             }
