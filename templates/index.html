@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание сайтов для малого бизнеса</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hero-text h1 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            color: #cbd5e1;
+        }
+
+        .features li::before {
+            content: "✓";
+            color: #38bdf8;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .form-card {
+            background: #0f172a;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-card h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #38bdf8;
+        }
+
+        button.btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #38bdf8, #6366f1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        button.btn-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Сообщение об успешной отправке */
+        .status-message {
+            display: none;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .status-message.success {
+            display: block;
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .status-message.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Левая колонка: Текст лендинга -->
+        <div class="hero-text">
+            <h1>Сайты для малого бизнеса под ключ</h1>
+            <p>Увеличу ваши продажи с помощью современного лендинга с быстрой загрузкой и адаптацией под мобильные устройства.</p>
+            
+            <ul class="features">
+                <li>Уникальный дизайн под вашу нишу</li>
+                <li>Высокая скорость загрузки</li>
+                <li>Мгновенные уведомления в Telegram</li>
+                <li>Адаптивность под все смартфоны</li>
+            </ul>
+        </div>
+
+        <!-- Правая колонка: Форма -->
+        <div class="form-card">
+            <h2>Оставить заявку</h2>
+            <form id="leadForm">
+                <div class="input-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" name="name" required placeholder="Иван">
+                </div>
+
+                <div class="input-group">
+    <label for="phone">Ваш телефон</label>
+    <input type="tel" id="phone" name="phone" required placeholder="+375 (29) 000-00-00">
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Получить консультацию</button>
+                <div id="statusMessage" class="status-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript для бесшовной (AJAX) отправки -->
+    <script>
+        const form = document.getElementById('leadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Отменяем стандартную перезагрузку страницы
+
+            // Блокируем кнопку на время отправки
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Отправка...';
+            statusMsg.className = 'status-message';
+            statusMsg.innerText = '';
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    statusMsg.className = 'status-message success';
+                    statusMsg.innerText = '✨ Спасибо! Заявка принята, скоро свяжусь с вами.';
+                    form.reset(); // Очищаем поля формы
+                } else {
+                    throw new Error(result.error || 'Ошибка отправки');
+                }
+            } catch (err) {
+                statusMsg.className = 'status-message error';
+                statusMsg.innerText = '❌ Не удалось отправить. Попробуйте еще раз.';
+            } finally {
+                // Возвращаем кнопку в исходное состояние
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Получить консультацию';
+            }
+        });
+    </script>
+<!-- Подключаем библиотеку масок -->
+<script src="https://unpkg.com/imask"></script>
+
+<script>
+  // Накладываем белорусский формат на поле телефона
+  const phoneInput = document.getElementById('phone');
+  const maskOptions = {
+    mask: '+{375} (00) 000-00-00'
+  };
+  const mask = IMask(phoneInput, maskOptions);
+</script>
+</body>
+</html>
