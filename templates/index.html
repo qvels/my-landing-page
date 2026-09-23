@@ -216,50 +216,77 @@
     </div>
 
     <script>
-        const form = document.getElementById('leadForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusMessage = document.getElementById('statusMessage');
+    const form = document.getElementById('leadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const phoneInput = document.getElementById('phoneInput');
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    // Автоматическая маска для телефона +375 (XX) XXX-XX-XX
+    phoneInput.addEventListener('input', function (e) {
+        let matrix = '+375 (__) ___-__-__',
+            i = 0,
+            def = matrix.replace(/\D/g, ''),
+            val = this.value.replace(/\D/g, '');
 
-            // Блокировка кнопки во время отправки
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Отправка...';
-            statusMessage.className = 'status-msg';
-            statusMessage.style.display = 'none';
+        if (def.length >= val.length) val = def;
 
-            const name = document.getElementById('nameInput').value;
-            const phone = document.getElementById('phoneInput').value;
-
-            try {
-                const response = await fetch('/api/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name: name, phone: phone })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.status === 'success') {
-                    statusMessage.innerText = '✓ Заявка успешно отправлена!';
-                    statusMessage.className = 'status-msg success';
-                    form.reset();
-                } else {
-                    throw new Error(data.message || 'Ошибка отправки');
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-                statusMessage.innerText = '✕ Не удалось отправить. Попробуйте еще раз.';
-                statusMessage.className = 'status-msg error';
-            } finally {
-                // Возвращаем кнопку в исходный вид
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Получить консультацию';
-            }
+        this.value = matrix.replace(/./g, function (a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? '' : a;
         });
-    </script>
+    });
+
+    // Очистка поля при фокусе, если оно пустое
+    phoneInput.addEventListener('focus', function () {
+        if (this.value === '') {
+            this.value = '+375 (';
+        }
+    });
+
+    phoneInput.addEventListener('blur', function () {
+        if (this.value === '+375 (') {
+            this.value = '';
+        }
+    });
+
+    // Обработка отправки формы
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Отправка...';
+        statusMessage.className = 'status-msg';
+        statusMessage.style.display = 'none';
+
+        const name = document.getElementById('nameInput').value;
+        const phone = phoneInput.value;
+
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name, phone: phone })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.status === 'success') {
+                statusMessage.innerText = '✓ Заявка успешно отправлена!';
+                statusMessage.className = 'status-msg success';
+                form.reset();
+            } else {
+                throw new Error(data.message || 'Ошибка отправки');
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            statusMessage.innerText = '✕ Не удалось отправить. Попробуйте еще раз.';
+            statusMessage.className = 'status-msg error';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Получить консультацию';
+        }
+    });
+</script>
 </body>
 </html>
